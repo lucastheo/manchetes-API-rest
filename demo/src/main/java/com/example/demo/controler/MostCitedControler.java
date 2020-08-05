@@ -24,7 +24,7 @@ public class MostCitedControler {
     @Autowired
     MostCitedService mostCitedService;
 
-    @GetMapping("/most_cited")
+    @GetMapping("/most_cited_by")
     public ResponseEntity getMostCited(@RequestParam ("data") Optional<CharSequence> optionalData,
                                        @RequestParam("url") Optional<CharSequence> optionalUrl,
                                        @RequestHeader("user-email") Optional<String> optionalEmail){
@@ -35,6 +35,11 @@ public class MostCitedControler {
         if( optionalData.isPresent() == true && DataValidation.mostCited( optionalData.get().toString() ) == false){return ErrorDate(); }
 
         return ResponseEntity.ok( mostCitedService.get( optionalUrl , optionalData ) );
+    }
+
+    @GetMapping("/most_cited_keys")
+    public ResponseEntity getMostCited(){
+        return ResponseEntity.ok( mostCitedService.getAllUrlsAndData());
     }
 
     private ResponseEntity ErrorEmail(){
