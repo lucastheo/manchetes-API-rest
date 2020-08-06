@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.List;
 
 @Controller
 @RequestMapping("/data/query")
@@ -38,8 +38,15 @@ public class MostCitedControler {
     }
 
     @GetMapping("/most_cited_keys")
-    public ResponseEntity getMostCited(){
-        return ResponseEntity.ok( mostCitedService.getAllUrlsAndData());
+    public ResponseEntity getMostCited(@RequestParam ("url") Optional<Boolean> optionalUrl , @RequestParam ("data") Optional<Boolean> optionalData ){
+        if( optionalUrl.orElse(false) && optionalData.orElse(false) ) {
+            return ResponseEntity.ok(mostCitedService.getAllUrlsAndData());
+        }else if( optionalUrl.orElse(false) ){
+            return ResponseEntity.ok(mostCitedService.getAllUrls());
+        }else if( optionalData.orElse(false) ){
+            return ResponseEntity.ok(mostCitedService.getAllDates());
+        }
+        return ResponseEntity.ok(mostCitedService.getAllUrlsAndData());
     }
 
     private ResponseEntity ErrorEmail(){

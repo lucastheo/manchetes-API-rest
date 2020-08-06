@@ -12,11 +12,12 @@ import java.util.*;
 public class MostCitedRepository {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyu-MM-dd-HH");
-    private static final String pathAll = "json_refined/most_cited/all_url_all_data.json";
-    private static final String pathData = "json_refined/most_cited/all_url_by_data/__data__.json";
-    private static final String pathUrl = "json_refined/most_cited/by_url_all_data/__url__.json";
-    private static final String pathUrlAndData = "json_refined/most_cited/by_url_by_data/__url__-__data__.json";
-    private static final String pathFatherUrlAndData = "json_refined/most_cited/by_url_by_data/";
+    private static final String pathBase =  "/home/lucathe/Documents/Projetos/manchetes/data/";
+    private static final String pathAll = pathBase + "json_refined/most_cited/all_url_all_data.json";
+    private static final String pathData = pathBase + "json_refined/most_cited/all_url_by_data/__data__.json";
+    private static final String pathUrl = pathBase +"json_refined/most_cited/by_url_all_data/__url__.json";
+    private static final String pathUrlAndData = pathBase +"json_refined/most_cited/by_url_by_data/__url__-__data__.json";
+    private static final String pathFatherUrlAndData = pathBase +"json_refined/most_cited/by_url_by_data/";
 
     public CharSequence getByUrl( CharSequence url ){
         return openFile( getPathByUrl( url ));
@@ -31,18 +32,13 @@ public class MostCitedRepository {
     public HashMap<String, Set<LocalDateTime>> getAllUrlsAndData(){
         File file = new File(pathFatherUrlAndData );
         HashMap<String, Set<LocalDateTime>> charSequences = new HashMap<>();
-        String name, url;
+        String name, url, anoStr[];
         LocalDateTime ano;
         for( File children : file.listFiles() ){
             name = children.getName();
-
-            ano = LocalDateTime.from(
-                    dateTimeFormatter.parse(
-                            name.substring(
-                                    name.length() -  17 , name.length() - 4 )
-                    )
-            );
-            url = name.substring(0 , name.length() - 19 );
+            anoStr = name.substring( name.length() -  18 , name.length() - 5 ).split("-");
+            ano = LocalDateTime.of( Integer.parseInt(anoStr[ 0 ] ) ,  Integer.parseInt( anoStr[ 1 ] ) ,  Integer.parseInt( anoStr[ 2 ] ) ,  Integer.parseInt( anoStr[ 3 ] ), 0  );
+            url = name.substring(0 , name.length() - 19 ).replace("-",":").replace("_", "/");
 
             if( charSequences.containsKey( url ) == false ){
                 charSequences.put( url , new HashSet());
