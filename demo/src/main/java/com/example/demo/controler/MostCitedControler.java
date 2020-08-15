@@ -25,20 +25,17 @@ public class MostCitedControler {
     MostCitedService mostCitedService;
 
     @GetMapping("/most_cited_by")
-    public ResponseEntity getMostCited(@RequestParam ("data") Optional<CharSequence> optionalData,
-                                       @RequestParam("url") Optional<CharSequence> optionalUrl,
-                                       @RequestHeader("user-email") Optional<String> optionalEmail){
-        if( optionalEmail.isPresent() == false || EmailUtil.validation( optionalEmail.get() ) == false ){ return ErrorEmail(); }
-
+    public ResponseEntity getMostCitedBy(@RequestParam ("data") Optional<CharSequence> optionalData,
+                                       @RequestParam("url") Optional<CharSequence> optionalUrl){
         if( optionalUrl.isPresent() == true && UrlValidation.urlMostCited(optionalUrl.get().toString() ) == false ){ return ErrorUrl(); }
 
-        if( optionalData.isPresent() == true && DataValidation.mostCited( optionalData.get().toString() ) == false){return ErrorDate(); }
+        else if( optionalData.isPresent() == true && DataValidation.mostCited( optionalData.get().toString() ) == false){return ErrorDate(); }
 
         return ResponseEntity.ok( mostCitedService.get( optionalUrl , optionalData ) );
     }
 
     @GetMapping("/most_cited_keys")
-    public ResponseEntity getMostCited(@RequestParam ("url") Optional<Boolean> optionalUrl , @RequestParam ("data") Optional<Boolean> optionalData ){
+    public ResponseEntity getMostCitedKey(@RequestParam ("url") Optional<Boolean> optionalUrl , @RequestParam ("data") Optional<Boolean> optionalData ){
         if( optionalUrl.orElse(false) && optionalData.orElse(false) ) {
             return ResponseEntity.ok(mostCitedService.getAllUrlsAndData());
         }else if( optionalUrl.orElse(false) ){

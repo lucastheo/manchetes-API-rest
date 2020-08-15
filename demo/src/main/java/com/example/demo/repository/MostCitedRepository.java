@@ -12,7 +12,9 @@ import java.util.*;
 public class MostCitedRepository {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyu-MM-dd-HH");
-    private static final String pathBase =  "/home/lucathe/Documents/Projetos/manchetes/data/";
+    private static final DateTimeFormatter dateTimeFormatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH");
+    //private static final String pathBase =  "/home/lucathe/Documents/Projetos/manchetes/data/";
+    private static final String pathBase =  "/home/ubuntu/Documents/manchetes/data/";
     private static final String pathAll = pathBase + "json_refined/most_cited/all_url_all_data.json";
     private static final String pathData = pathBase + "json_refined/most_cited/all_url_by_data/__data__.json";
     private static final String pathUrl = pathBase +"json_refined/most_cited/by_url_all_data/__url__.json";
@@ -28,6 +30,7 @@ public class MostCitedRepository {
     public CharSequence getByUrlAndDate( CharSequence url , LocalDateTime date){
         return openFile( getPathByUrlAndDate( url , date ));
     }
+    public CharSequence getAll(){ return openFile( pathAll ); };
 
     public HashMap<String, Set<LocalDateTime>> getAllUrlsAndData(){
         File file = new File(pathFatherUrlAndData );
@@ -77,7 +80,7 @@ public class MostCitedRepository {
         return  data.toString().replace(":","-").replace("/", "_");
     }
     private CharSequence toDate( LocalDateTime date ){
-        return dateTimeFormatter.format(date);
+        return dateTimeFormatter2.format(date);
     }
     private CharSequence toUrlAndDate( CharSequence url , LocalDateTime date ){
         return toUrl( url )+ "-" + toDate(date);

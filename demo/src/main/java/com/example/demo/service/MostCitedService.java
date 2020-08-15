@@ -28,7 +28,7 @@ public class MostCitedService {
         }else if( url.isPresent() == false && date.isPresent() ){
             return mostCitedRepository.getByDate( toLocalDate( date.get() ));
         }else {
-            return "TODO";
+            return mostCitedRepository.getAll( );
         }
     }
 
