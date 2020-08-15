@@ -1,6 +1,6 @@
 # Manchetes-API-rest
 
-Manchetes-API-rest é uma aplicação em java com springboot, tem como finalidade disponibilizar em API rest os dados feitos pelo repositório manchetes-data, ou seja, retornar os diversos json refined.
+Manchetes-API-rest é uma aplicação em java com springboot, a finalidade disponibilizar em API rest os dados feitos pelo repositório manchetes-data, ou seja, retornar os diversos json refined.
 
 # Rotas
 #### data/query/most_cited_keys
