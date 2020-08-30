@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.util.FileUtil;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
@@ -14,7 +15,7 @@ public class MostCitedRepository {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyu-MM-dd-HH");
     private static final DateTimeFormatter dateTimeFormatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH");
     //private static final String pathBase =  "/home/lucathe/Documents/Projetos/manchetes/data/";
-    private static final String pathBase =  "/home/ubuntu/Documents/manchetes/data/";
+    private static final String pathBase =  "/home/theodoro/Documents/Projetos/manchetes/data/";
     private static final String pathAll = pathBase + "json_refined/most_cited/all_url_all_data.json";
     private static final String pathData = pathBase + "json_refined/most_cited/all_url_by_data/__data__.json";
     private static final String pathUrl = pathBase +"json_refined/most_cited/by_url_all_data/__url__.json";
@@ -22,15 +23,15 @@ public class MostCitedRepository {
     private static final String pathFatherUrlAndData = pathBase +"json_refined/most_cited/by_url_by_data/";
 
     public CharSequence getByUrl( CharSequence url ){
-        return openFile( getPathByUrl( url ));
+        return FileUtil.openFile( getPathByUrl( url ));
     }
     public CharSequence getByDate( LocalDateTime date ){
-        return openFile( getPathByData( date ));
+        return FileUtil.openFile( getPathByData( date ));
     }
     public CharSequence getByUrlAndDate( CharSequence url , LocalDateTime date){
-        return openFile( getPathByUrlAndDate( url , date ));
+        return FileUtil.openFile( getPathByUrlAndDate( url , date ));
     }
-    public CharSequence getAll(){ return openFile( pathAll ); };
+    public CharSequence getAll(){ return FileUtil.openFile( pathAll ); };
 
     public HashMap<String, Set<LocalDateTime>> getAllUrlsAndData(){
         File file = new File(pathFatherUrlAndData );
@@ -50,30 +51,6 @@ public class MostCitedRepository {
 
         }
         return charSequences;
-    }
-
-    private CharSequence openFile( CharSequence file ){
-        FileReader fileReader;
-        Boolean noException = true;
-        try { fileReader = new FileReader(file.toString());}
-        catch ( FileNotFoundException e ){ System.err.println("MostCitedRepository: Erro ao encontrar o arquivo :" + file ); return "";}
-
-        BufferedReader br = new BufferedReader(fileReader);
-        StringBuilder linha = new StringBuilder();
-        try {
-            while(br.ready()){
-                 linha.append(br.readLine() );
-            }
-        }
-        catch (IOException e ){ System.err.println("MostCitedRepoisitory: Erro ao ler o arquivo :" + file ); noException = false;}
-
-        try { br.close(); }
-        catch ( IOException e ){ System.out.println("MostCitedRepository: Erro ao finalizar o buffer");}
-
-        if( noException ){
-            return linha.toString();
-        }
-        return  "";
     }
 
     private CharSequence toUrl( CharSequence data ){
